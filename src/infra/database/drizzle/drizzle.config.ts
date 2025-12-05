@@ -5,11 +5,7 @@ dotenv.config();
 
 export default defineConfig({
   dbCredentials: {
-    host: process.env.DB_HOST as string,
-    user: process.env.DB_USER as string,
-    password: process.env.DB_PASSWORD as string,
-    database: process.env.DB_NAME as string,
-    ssl: false,
+    url: process.env.DATABASE_URL!,
   },
   dialect: 'postgresql',
   schema: './src/infra/database/drizzle/schemas/**/*',
