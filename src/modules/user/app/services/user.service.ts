@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SignInWithGoogleUseCase } from '@wiwiewei18/wilin-storage-domain';
-import { GoogleTokenService } from 'src/infra/authentication/google/googleToken.service';
+import { GoogleTokenService } from '../../../../infra/authentication/google/googleToken.service';
 import { PostgresUserRepository } from '../../infra/postgresUserRepository';
 
 @Injectable()
