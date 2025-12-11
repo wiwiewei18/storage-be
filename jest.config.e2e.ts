@@ -7,7 +7,7 @@ const config: Config = {
   moduleFileExtensions: ['ts', 'js'],
   testEnvironment: 'node',
   verbose: true,
-  //   setupFilesAfterEnv: ['<rootDir>/test/e2e.setup.ts'],
+  setupFiles: ['<rootDir>/test/setupTestEnv.ts'],
 };
 
 export default config;
