@@ -2,12 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { SignInWithGoogleUseCase } from '@wiwiewei18/wilin-storage-domain';
 import { GoogleTokenService } from '../../../../infra/authentication/google/googleToken.service';
 import { PostgresUserRepository } from '../../infra/postgresUserRepository';
+import { JwtTokenService } from 'src/infra/authentication/jwt/jwtToken.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly google: GoogleTokenService,
     private readonly repo: PostgresUserRepository,
+    private readonly jwt: JwtTokenService,
   ) {}
 
   async signInWithGoogle(idToken: string) {
@@ -26,6 +28,12 @@ export class UserService {
       pictureUrl: payload.picture ?? '',
     });
 
-    return result.user;
+    const accessToken = this.jwt.signAccessToken({
+      userId: result.user.id,
+      name: result.user.name ?? '',
+      email: result.user.email,
+    });
+
+    return { user: result.user, accessToken };
   }
 }

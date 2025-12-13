@@ -4,9 +4,10 @@ import { UserController } from './app/controllers/user.controller';
 import { GoogleTokenService } from '../../infra/authentication/google/googleToken.service';
 import { PostgresUserRepository } from './infra/postgresUserRepository';
 import { DatabaseModule } from '../../infra/database/database.module';
+import { JwtAuthModule } from 'src/infra/authentication/jwt/jwtAuth.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, JwtAuthModule],
   controllers: [UserController],
   providers: [PostgresUserRepository, UserService, GoogleTokenService],
 })
