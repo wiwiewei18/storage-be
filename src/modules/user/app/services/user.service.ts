@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { SignInWithGoogleUseCase } from '@wiwiewei18/wilin-storage-domain';
 import { GoogleTokenService } from '../../../../infra/authentication/google/googleToken.service';
 import { PostgresUserRepository } from '../../infra/postgresUserRepository';
@@ -36,8 +36,6 @@ export class UserService {
 
     const accessToken = this.jwt.signAccessToken({
       userId: result.user.id,
-      name: result.user.name ?? '',
-      email: result.user.email,
     });
 
     const refreshToken = generateRefreshToken();
@@ -48,5 +46,30 @@ export class UserService {
     });
 
     return { user: result.user, accessToken, refreshToken };
+  }
+
+  async refreshToken(refreshToken: string) {
+    const tokenHash = hashToken(refreshToken);
+
+    const stored = await this.refreshTokenRepo.findValid(tokenHash);
+    if (!stored) throw new UnauthorizedException();
+
+    await this.refreshTokenRepo.revoke(stored.id);
+
+    const accessToken = this.jwt.signAccessToken({
+      userId: stored.userId,
+    });
+
+    const newRefreshToken = generateRefreshToken();
+    await this.refreshTokenRepo.save({
+      userId: stored.userId,
+      tokenHash: hashToken(newRefreshToken),
+      expiresAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+    });
+
+    return {
+      accessToken,
+      refreshToken: newRefreshToken,
+    };
   }
 }

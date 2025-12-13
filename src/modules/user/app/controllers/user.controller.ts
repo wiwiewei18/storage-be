@@ -12,13 +12,16 @@ export class UserController {
     return await this.service.signInWithGoogle(body.idToken);
   }
 
+  @Post('refresh-token')
+  async refreshToken(@Body('refreshToken') refreshToken: string) {
+    return this.service.refreshToken(refreshToken);
+  }
+
   @UseGuards(JwtAuthGuard)
-  @Get('/my-profile')
+  @Get('my-profile')
   getMyProfile(@Req() req) {
     return {
       userId: req.user.userId,
-      name: req.user.name,
-      email: req.user.email,
     };
   }
 }
