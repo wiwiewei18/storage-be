@@ -3,13 +3,19 @@ import { SignInWithGoogleUseCase } from '@wiwiewei18/wilin-storage-domain';
 import { GoogleTokenService } from '../../../../infra/authentication/google/googleToken.service';
 import { PostgresUserRepository } from '../../infra/postgresUserRepository';
 import { JwtTokenService } from 'src/infra/authentication/jwt/jwtToken.service';
+import { PostgresRefreshTokenRepository } from '../../infra/postgresRefreshTokenRepository';
+import {
+  generateRefreshToken,
+  hashToken,
+} from 'src/infra/authentication/token.util';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly google: GoogleTokenService,
-    private readonly repo: PostgresUserRepository,
     private readonly jwt: JwtTokenService,
+    private readonly userRepo: PostgresUserRepository,
+    private readonly refreshTokenRepo: PostgresRefreshTokenRepository,
   ) {}
 
   async signInWithGoogle(idToken: string) {
@@ -19,7 +25,7 @@ export class UserService {
       throw new Error('Invalid Google ID token');
     }
 
-    const useCase = new SignInWithGoogleUseCase(this.repo);
+    const useCase = new SignInWithGoogleUseCase(this.userRepo);
 
     const result = await useCase.execute({
       googleId: payload.sub,
@@ -34,6 +40,13 @@ export class UserService {
       email: result.user.email,
     });
 
-    return { user: result.user, accessToken };
+    const refreshToken = generateRefreshToken();
+    await this.refreshTokenRepo.save({
+      userId: result.user.id,
+      tokenHash: hashToken(refreshToken),
+      expiresAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+    });
+
+    return { user: result.user, accessToken, refreshToken };
   }
 }

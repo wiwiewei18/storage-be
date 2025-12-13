@@ -5,10 +5,16 @@ import { GoogleTokenService } from '../../infra/authentication/google/googleToke
 import { PostgresUserRepository } from './infra/postgresUserRepository';
 import { DatabaseModule } from '../../infra/database/database.module';
 import { JwtAuthModule } from 'src/infra/authentication/jwt/jwtAuth.module';
+import { PostgresRefreshTokenRepository } from './infra/postgresRefreshTokenRepository';
 
 @Module({
   imports: [DatabaseModule, JwtAuthModule],
   controllers: [UserController],
-  providers: [PostgresUserRepository, UserService, GoogleTokenService],
+  providers: [
+    PostgresUserRepository,
+    PostgresRefreshTokenRepository,
+    UserService,
+    GoogleTokenService,
+  ],
 })
 export class UserModule {}

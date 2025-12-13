@@ -3,7 +3,7 @@ import { Inject } from '@nestjs/common';
 import { DB_CLIENT } from 'src/infra/database/database.module';
 import { refreshTokenTable } from 'src/infra/database/drizzle/schemas/refreshToken.schema';
 
-export class RefreshTokenRepository {
+export class PostgresRefreshTokenRepository {
   constructor(@Inject(DB_CLIENT) private readonly db) {}
 
   async save(data: { userId: string; tokenHash: string; expiresAt: Date }) {
