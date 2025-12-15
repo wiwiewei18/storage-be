@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { SignInWithGoogleDTO } from '../dtos/signInWithGoogle.dto';
 import { JwtAuthGuard } from 'src/infra/authentication/jwt/jwtAuth.guard';
@@ -10,6 +18,12 @@ export class UserController {
   @Post('sign-in-with-google')
   async signInWithGoogle(@Body() body: SignInWithGoogleDTO) {
     return await this.service.signInWithGoogle(body.idToken);
+  }
+
+  @Post('sign-out')
+  @HttpCode(204)
+  async signOut(@Body('refreshToken') refreshToken: string) {
+    return await this.service.signOut(refreshToken);
   }
 
   @Post('refresh-token')

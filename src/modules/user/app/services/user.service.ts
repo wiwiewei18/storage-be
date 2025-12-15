@@ -48,6 +48,18 @@ export class UserService {
     return { user: result.user, accessToken, refreshToken };
   }
 
+  async signOut(refreshToken: string): Promise<void> {
+    const tokenHash = hashToken(refreshToken);
+
+    const stored = await this.refreshTokenRepo.findValid(tokenHash);
+
+    if (!stored) {
+      return;
+    }
+
+    await this.refreshTokenRepo.revoke(stored.id);
+  }
+
   async refreshToken(refreshToken: string) {
     const tokenHash = hashToken(refreshToken);
 
