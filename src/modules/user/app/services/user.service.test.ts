@@ -58,7 +58,7 @@ describe('UserService', () => {
     expect(mockUserRepo.findByGoogleId).toHaveBeenCalledWith(
       dummyUser.googleId,
     );
-    expect(result).toEqual(dummyUser);
+    expect(result.user).toEqual(dummyUser);
   });
 
   it('should sign up, sign in and return the user when given a valid id token for non-existing user', async () => {
@@ -84,10 +84,10 @@ describe('UserService', () => {
     );
     expect(mockUserRepo.findByEmail).toHaveBeenCalledWith(dummyUser.email);
     expect(mockUserRepo.save).toHaveBeenCalled();
-    expect(result.name).toEqual(dummyUser.name);
-    expect(result.email).toEqual(dummyUser.email);
-    expect(result.googleId).toEqual(dummyUser.googleId);
-    expect(result.pictureUrl).toEqual(dummyUser.pictureUrl);
+    expect(result.user.name).toEqual(dummyUser.name);
+    expect(result.user.email).toEqual(dummyUser.email);
+    expect(result.user.googleId).toEqual(dummyUser.googleId);
+    expect(result.user.pictureUrl).toEqual(dummyUser.pictureUrl);
   });
 
   it('should not sign in and throw error when given an invalid id token', async () => {
