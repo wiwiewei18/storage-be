@@ -8,6 +8,7 @@ import {
   generateRefreshToken,
   hashToken,
 } from 'src/infra/authentication/token.util';
+import { UserEventPublisher } from '../../infra/messaging/userEventPublisher';
 
 @Injectable()
 export class UserService {
@@ -16,6 +17,7 @@ export class UserService {
     private readonly jwt: JwtTokenService,
     private readonly userRepo: PostgresUserRepository,
     private readonly refreshTokenRepo: PostgresRefreshTokenRepository,
+    private readonly userEventPublisher: UserEventPublisher,
   ) {}
 
   async signInWithGoogle(idToken: string) {
@@ -44,6 +46,8 @@ export class UserService {
       tokenHash: hashToken(refreshToken),
       expiresAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
     });
+
+    await this.userEventPublisher.publish(result.events);
 
     return { user: result.user, accessToken, refreshToken };
   }
