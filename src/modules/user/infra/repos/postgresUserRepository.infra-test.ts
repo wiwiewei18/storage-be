@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
 import { PostgresUserRepository } from './postgresUserRepository';
-import { DatabaseModule } from '../../../infra/database/database.module';
+import { DatabaseModule } from '../../../../infra/database/database.module';
 import { User } from '@wiwiewei18/wilin-storage-domain';
-import { dbClient, pool } from '../../../infra/database/drizzle/drizzle';
-import { userTable } from '../../../infra/database/drizzle/schemas/user.schema';
+import { dbClient, pool } from '../../../../infra/database/drizzle/drizzle';
+import { userTable } from '../../../../infra/database/drizzle/schemas/user.schema';
 
 describe('PostgresUserRepository', () => {
   let userRepo: PostgresUserRepository;

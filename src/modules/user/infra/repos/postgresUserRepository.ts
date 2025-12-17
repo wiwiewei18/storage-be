@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IUserRepository, User } from '@wiwiewei18/wilin-storage-domain';
 import { eq } from 'drizzle-orm';
-import { DB_CLIENT } from '../../../infra/database/database.module';
-import { userTable } from '../../../infra/database/drizzle/schemas/user.schema';
+import { DB_CLIENT } from '../../../../infra/database/database.module';
+import { userTable } from '../../../../infra/database/drizzle/schemas/user.schema';
 
 @Injectable()
 export class PostgresUserRepository implements IUserRepository {

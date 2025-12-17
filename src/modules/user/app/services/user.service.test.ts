@@ -1,6 +1,6 @@
 import { GoogleTokenService } from '../../../../infra/authentication/google/googleToken.service';
 import { UserService } from './user.service';
-import { PostgresUserRepository } from '../../infra/postgresUserRepository';
+import { PostgresUserRepository } from '../../infra/repos/postgresUserRepository';
 import { Test } from '@nestjs/testing';
 import { User } from '@wiwiewei18/wilin-storage-domain';
 import { TokenPayload } from 'google-auth-library';
