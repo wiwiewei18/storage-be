@@ -1,6 +1,6 @@
 import { GoogleTokenService } from '../../../../infra/authentication/google/googleToken.service';
 import { UserService } from './user.service';
-import { PostgresUserRepository } from '../../infra/repos/postgresUserRepository';
+import { PostgresUserRepo } from '../../infra/repos/postgresUser.repo';
 import { Test } from '@nestjs/testing';
 import { User } from '@wiwiewei18/wilin-storage-domain';
 import { TokenPayload } from 'google-auth-library';
@@ -8,7 +8,7 @@ import { TokenPayload } from 'google-auth-library';
 describe('UserService', () => {
   let service: UserService;
   let mockGoogleTokenService: jest.Mocked<GoogleTokenService>;
-  let mockUserRepo: jest.Mocked<PostgresUserRepository>;
+  let mockUserRepo: jest.Mocked<PostgresUserRepo>;
 
   const dummyUser = User.create(
     'john.doe@mail.com',
@@ -23,7 +23,7 @@ describe('UserService', () => {
         UserService,
         { provide: GoogleTokenService, useValue: { verifyIdToken: jest.fn() } },
         {
-          provide: PostgresUserRepository,
+          provide: PostgresUserRepo,
           useValue: {
             findByGoogleId: jest.fn(),
             findByEmail: jest.fn(),
@@ -35,7 +35,7 @@ describe('UserService', () => {
 
     service = testingModule.get(UserService);
     mockGoogleTokenService = testingModule.get(GoogleTokenService);
-    mockUserRepo = testingModule.get(PostgresUserRepository);
+    mockUserRepo = testingModule.get(PostgresUserRepo);
   });
 
   it('should sign in and return the user when given a valid id token for existing user', async () => {

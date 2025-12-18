@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CreateFileOwnerUseCase } from '@wiwiewei18/wilin-storage-domain';
-import { PostgresFileOwnerRepository } from '../repos/postgresFileOwnerRepository';
+import { PostgresFileOwnerRepo } from '../repos/postgresFileOwner.repo';
 import { type UserSignedUpIntegrationEvent } from 'src/shared/events/userSignedUp.integration';
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 
 @Injectable()
 export class UserSignedUpSubscriber {
-  constructor(private readonly fileOwnerRepo: PostgresFileOwnerRepository) {}
+  constructor(private readonly fileOwnerRepo: PostgresFileOwnerRepo) {}
 
   @RabbitSubscribe({
     exchange: 'user.exchange',
@@ -14,8 +14,10 @@ export class UserSignedUpSubscriber {
     queue: 'storage.create-file-owner',
   })
   async handle(event: UserSignedUpIntegrationEvent) {
-    const useCase = new CreateFileOwnerUseCase(this.fileOwnerRepo);
+    const createFileOwnerUseCase = new CreateFileOwnerUseCase(
+      this.fileOwnerRepo,
+    );
 
-    await useCase.execute({ userId: event.payload.userId });
+    await createFileOwnerUseCase.execute({ userId: event.payload.userId });
   }
 }

@@ -1,13 +1,10 @@
 import { Inject } from '@nestjs/common';
-import {
-  FileOwner,
-  IFileOwnerRepository,
-} from '@wiwiewei18/wilin-storage-domain';
+import { FileOwner, FileOwnerRepo } from '@wiwiewei18/wilin-storage-domain';
 import { eq } from 'drizzle-orm';
 import { DB_CLIENT } from 'src/infra/database/database.module';
 import { fileOwnerTable } from 'src/infra/database/drizzle/schemas/fileOwner.schema';
 
-export class PostgresFileOwnerRepository implements IFileOwnerRepository {
+export class PostgresFileOwnerRepo implements FileOwnerRepo {
   constructor(@Inject(DB_CLIENT) private readonly db) {}
 
   async findByUserId(userId: string): Promise<FileOwner | null> {
