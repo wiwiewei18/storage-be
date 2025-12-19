@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { RequestFileUploadUseCase } from '@wiwiewei18/wilin-storage-domain';
+import {
+  CompleteFileUploadUseCase,
+  RequestFileUploadUseCase,
+} from '@wiwiewei18/wilin-storage-domain';
 import { PostgresFileRepo } from '../../infra/repos/postgresFile.repo';
 import { PostgresFileOwnerRepo } from '../../infra/repos/postgresFileOwner.repo';
 import { R2ObjectStorage } from 'src/infra/storage/cloudflare/r2ObjectStorage.service';
@@ -42,5 +45,29 @@ export class StorageService {
       fileId: output.file.id,
       uploadURL,
     };
+  }
+
+  async completeFileUpload(fileId: string) {
+    const completeFileUploadUseCase = new CompleteFileUploadUseCase(
+      this.fileRepo,
+    );
+
+    const file = await this.fileRepo.findById(fileId);
+
+    if (!file) throw new Error('File not found');
+
+    const uploadedFile = await this.objectStorage.verifyObject(file.objectKey);
+
+    if (uploadedFile.size !== file.size.toNumber()) {
+      throw new Error('Uploaded size mismatch');
+    }
+
+    if (uploadedFile.contentType !== file.type.toString()) {
+      throw new Error('Uploaded content type mismatch');
+    }
+
+    const output = await completeFileUploadUseCase.execute({ id: fileId });
+
+    return { fileId: output.file.id, status: output.file.status };
   }
 }

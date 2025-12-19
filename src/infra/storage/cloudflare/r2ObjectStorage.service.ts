@@ -1,4 +1,8 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import {
+  HeadObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Injectable } from '@nestjs/common';
 
@@ -31,5 +35,16 @@ export class R2ObjectStorage {
     return getSignedUrl(this.client, command, {
       expiresIn: input.expiryInSeconds,
     });
+  }
+
+  async verifyObject(objectKey: string) {
+    const res = await this.client.send(
+      new HeadObjectCommand({ Bucket: process.env.R2_BUCKET, Key: objectKey }),
+    );
+
+    return {
+      size: res.ContentLength,
+      contentType: res.ContentType,
+    };
   }
 }

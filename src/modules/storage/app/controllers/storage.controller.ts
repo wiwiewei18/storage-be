@@ -2,6 +2,7 @@ import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/infra/authentication/jwt/jwtAuth.guard';
 import { StorageService } from '../services/storage.service';
 import { RequestFileUploadDTO } from '../dtos/requestFileUpload.dto';
+import { CompleteFileUploadDTO } from '../dtos/completeFileUpload.dto';
 
 @Controller('storage')
 export class StorageController {
@@ -16,5 +17,11 @@ export class StorageController {
       size: body.size,
       type: body.type,
     });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('complete-file-upload')
+  async completeFileUpload(@Body() body: CompleteFileUploadDTO) {
+    return await this.service.completeFileUpload(body.fileId);
   }
 }
