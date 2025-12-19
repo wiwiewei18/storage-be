@@ -32,16 +32,14 @@ export class StorageService {
       type,
     });
 
-    const key = `${output.file.fileOwnerId}/${output.file.id}-${output.file.name}`;
-
     const uploadURL = await this.objectStorage.generateUploadURL({
-      key,
+      key: output.file.objectKey,
       contentType: output.file.type.toString(),
       expiryInSeconds: 300,
     });
 
     return {
-      objectKey: key,
+      fileId: output.file.id,
       uploadURL,
     };
   }
