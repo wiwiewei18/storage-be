@@ -1,12 +1,18 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/infra/authentication/jwt/jwtAuth.guard';
 import { StorageService } from '../services/storage.service';
 import { RequestFileUploadDTO } from '../dtos/requestFileUpload.dto';
 import { CompleteFileUploadDTO } from '../dtos/completeFileUpload.dto';
 
-@Controller('storage')
+@Controller('storages')
 export class StorageController {
   constructor(private readonly service: StorageService) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/files')
+  async getFileList(@Req() req) {
+    return await this.service.getFileList(req.user.userId);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('request-file-upload')

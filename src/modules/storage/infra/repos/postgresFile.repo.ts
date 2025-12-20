@@ -25,6 +25,20 @@ export class PostgresFileRepo implements FileRepo {
     });
   }
 
+  async findFileListByFileOwnerId(fileOwnerId: string): Promise<File[]> {
+    const dataList = await this.db
+      .select()
+      .from(fileTable)
+      .where(eq(fileTable.fileOwnerId, fileOwnerId));
+    return dataList.map((data) =>
+      File.reconstitute({
+        ...data,
+        size: FileSize.create(data.size),
+        type: FileType.create(data.type),
+      }),
+    );
+  }
+
   async save(file: File): Promise<void> {
     const record = file.toJSON();
     await this.db.insert(fileTable).values(record).onConflictDoUpdate({

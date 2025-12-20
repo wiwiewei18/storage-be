@@ -11,7 +11,7 @@ import { UserService } from '../services/user.service';
 import { SignInWithGoogleDTO } from '../dtos/signInWithGoogle.dto';
 import { JwtAuthGuard } from 'src/infra/authentication/jwt/jwtAuth.guard';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly service: UserService) {}
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
   CompleteFileUploadUseCase,
+  GetFileListUseCase,
   RequestFileUploadUseCase,
 } from '@wiwiewei18/wilin-storage-domain';
 import { PostgresFileRepo } from '../../infra/repos/postgresFile.repo';
@@ -14,6 +15,27 @@ export class StorageService {
     private readonly fileOwnerRepo: PostgresFileOwnerRepo,
     private readonly objectStorage: R2ObjectStorage,
   ) {}
+
+  async getFileList(userId: string) {
+    const getFileListUseCase = new GetFileListUseCase(
+      this.fileRepo,
+      this.fileOwnerRepo,
+    );
+
+    const output = await getFileListUseCase.execute({ userId });
+
+    return {
+      fileList: output.fileList.map((file) => {
+        return {
+          id: file.id,
+          name: file.name,
+          size: file.size.toNumber(),
+          type: file.type.toString(),
+          createdAt: file.createdAt,
+        };
+      }),
+    };
+  }
 
   async requestFileUpload(payload: {
     userId: string;
