@@ -1,20 +1,20 @@
 import { Test } from '@nestjs/testing';
-import { PostgresUserRepository } from './postgresUserRepository';
-import { DatabaseModule } from '../../../infra/database/database.module';
-import { User } from '@wiwiewei18/wilin-storage-domain';
-import { dbClient, pool } from '../../../infra/database/drizzle/drizzle';
-import { userTable } from '../../../infra/database/drizzle/schemas/user.schema';
+import { PostgresUserRepo } from './postgresUser.repo';
+import { DatabaseModule } from '../../../../infra/database/database.module';
+import { User } from '@wiwiewei18/storage-domain';
+import { dbClient, pool } from '../../../../infra/database/drizzle/drizzle';
+import { userTable } from '../../../../infra/database/drizzle/schemas/user.schema';
 
-describe('PostgresUserRepository', () => {
-  let userRepo: PostgresUserRepository;
+describe('PostgresUserRepo', () => {
+  let userRepo: PostgresUserRepo;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [DatabaseModule],
-      providers: [PostgresUserRepository],
+      providers: [PostgresUserRepo],
     }).compile();
 
-    userRepo = moduleRef.get(PostgresUserRepository);
+    userRepo = moduleRef.get(PostgresUserRepo);
   });
 
   beforeEach(async () => {

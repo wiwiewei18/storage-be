@@ -3,14 +3,14 @@ import { Inject } from '@nestjs/common';
 import { DB_CLIENT } from 'src/infra/database/database.module';
 import { refreshTokenTable } from 'src/infra/database/drizzle/schemas/refreshToken.schema';
 
-export class PostgresRefreshTokenRepository {
+export class PostgresRefreshTokenRepo {
   constructor(@Inject(DB_CLIENT) private readonly db) {}
 
   async save(data: { userId: string; tokenHash: string; expiresAt: Date }) {
     await this.db.insert(refreshTokenTable).values(data);
   }
 
-  async findValid(tokenHash: string) {
+  async findByTokenHash(tokenHash: string) {
     const result = await this.db
       .select()
       .from(refreshTokenTable)

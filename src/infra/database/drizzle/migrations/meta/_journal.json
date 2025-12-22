@@ -15,6 +15,34 @@
       "when": 1765629589463,
       "tag": "0001_rare_shadowcat",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1765971535430,
+      "tag": "0002_watery_ser_duncan",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1765972333723,
+      "tag": "0003_little_captain_flint",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1766105347317,
+      "tag": "0004_messy_satana",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1766158396120,
+      "tag": "0005_chunky_talisman",
+      "breakpoints": true
     }
   ]
 }

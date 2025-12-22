@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IUserRepository, User } from '@wiwiewei18/wilin-storage-domain';
+import { UserRepo, User } from '@wiwiewei18/storage-domain';
 import { eq } from 'drizzle-orm';
-import { DB_CLIENT } from '../../../infra/database/database.module';
-import { userTable } from '../../../infra/database/drizzle/schemas/user.schema';
+import { DB_CLIENT } from '../../../../infra/database/database.module';
+import { userTable } from '../../../../infra/database/drizzle/schemas/user.schema';
 
 @Injectable()
-export class PostgresUserRepository implements IUserRepository {
+export class PostgresUserRepo implements UserRepo {
   constructor(@Inject(DB_CLIENT) private readonly db) {}
 
   async findByGoogleId(googleId: string): Promise<User | null> {
