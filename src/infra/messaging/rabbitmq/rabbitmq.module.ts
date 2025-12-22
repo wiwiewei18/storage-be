@@ -9,6 +9,10 @@ import { RabbitMQModule as GoLevelUpRabbitMQModule } from '@golevelup/nestjs-rab
           name: 'user.exchange',
           type: 'topic',
         },
+        {
+          name: 'storage.exchange',
+          type: 'topic',
+        },
       ],
       uri: process.env.RABBITMQ_URI,
       connectionInitOptions: { wait: false },

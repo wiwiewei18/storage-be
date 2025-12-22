@@ -7,6 +7,7 @@ import {
 import { PostgresFileRepo } from '../../infra/repos/postgresFile.repo';
 import { PostgresFileOwnerRepo } from '../../infra/repos/postgresFileOwner.repo';
 import { R2ObjectStorage } from 'src/infra/storage/cloudflare/r2ObjectStorage.service';
+import { StorageEventPublisher } from '../../infra/messaging/storageEventPublisher';
 
 @Injectable()
 export class StorageService {
@@ -14,6 +15,7 @@ export class StorageService {
     private readonly fileRepo: PostgresFileRepo,
     private readonly fileOwnerRepo: PostgresFileOwnerRepo,
     private readonly objectStorage: R2ObjectStorage,
+    private readonly storageEventPublisher: StorageEventPublisher,
   ) {}
 
   async getFileList(userId: string) {
@@ -89,6 +91,8 @@ export class StorageService {
     }
 
     const output = await completeFileUploadUseCase.execute({ id: fileId });
+
+    await this.storageEventPublisher.publish(output.events);
 
     return { fileId: output.file.id, status: output.file.status };
   }
