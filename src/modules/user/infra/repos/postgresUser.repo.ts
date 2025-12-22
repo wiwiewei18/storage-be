@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepo, User } from '@wiwiewei18/wilin-storage-domain';
+import { UserRepo, User } from '@wiwiewei18/storage-domain';
 import { eq } from 'drizzle-orm';
 import { DB_CLIENT } from '../../../../infra/database/database.module';
 import { userTable } from '../../../../infra/database/drizzle/schemas/user.schema';

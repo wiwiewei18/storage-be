@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { FileOwner, FileOwnerRepo } from '@wiwiewei18/wilin-storage-domain';
+import { FileOwner, FileOwnerRepo } from '@wiwiewei18/storage-domain';
 import { eq } from 'drizzle-orm';
 import { DB_CLIENT } from 'src/infra/database/database.module';
 import { fileOwnerTable } from 'src/infra/database/drizzle/schemas/fileOwner.schema';

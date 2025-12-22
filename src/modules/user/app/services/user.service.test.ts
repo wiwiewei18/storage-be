@@ -2,7 +2,7 @@ import { GoogleTokenService } from '../../../../infra/authentication/google/goog
 import { UserService } from './user.service';
 import { PostgresUserRepo } from '../../infra/repos/postgresUser.repo';
 import { Test } from '@nestjs/testing';
-import { User } from '@wiwiewei18/wilin-storage-domain';
+import { User } from '@wiwiewei18/storage-domain';
 import { TokenPayload } from 'google-auth-library';
 
 describe('UserService', () => {

@@ -1,6 +1,6 @@
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { Injectable } from '@nestjs/common';
-import { UserSignedUp } from '@wiwiewei18/wilin-storage-domain';
+import { UserSignedUp } from '@wiwiewei18/storage-domain';
 import { UserSignedUpIntegrationEvent } from 'src/shared/events/userSignedUp.integration';
 
 @Injectable()

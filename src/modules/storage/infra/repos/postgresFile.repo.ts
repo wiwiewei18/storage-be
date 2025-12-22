@@ -1,10 +1,5 @@
 import { Inject } from '@nestjs/common';
-import {
-  File,
-  FileSize,
-  FileType,
-  FileRepo,
-} from '@wiwiewei18/wilin-storage-domain';
+import { File, FileSize, FileType, FileRepo } from '@wiwiewei18/storage-domain';
 import { eq } from 'drizzle-orm';
 import { DB_CLIENT } from 'src/infra/database/database.module';
 import { fileTable } from 'src/infra/database/drizzle/schemas/file.schema';

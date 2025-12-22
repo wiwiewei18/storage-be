@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFileOwnerUseCase } from '@wiwiewei18/wilin-storage-domain';
+import { CreateFileOwnerUseCase } from '@wiwiewei18/storage-domain';
 import { PostgresFileOwnerRepo } from '../repos/postgresFileOwner.repo';
 import { type UserSignedUpIntegrationEvent } from 'src/shared/events/userSignedUp.integration';
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';

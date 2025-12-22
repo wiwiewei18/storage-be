@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { PostgresUserRepo } from './postgresUser.repo';
 import { DatabaseModule } from '../../../../infra/database/database.module';
-import { User } from '@wiwiewei18/wilin-storage-domain';
+import { User } from '@wiwiewei18/storage-domain';
 import { dbClient, pool } from '../../../../infra/database/drizzle/drizzle';
 import { userTable } from '../../../../infra/database/drizzle/schemas/user.schema';
 

@@ -3,7 +3,7 @@ import {
   CompleteFileUploadUseCase,
   GetFileListUseCase,
   RequestFileUploadUseCase,
-} from '@wiwiewei18/wilin-storage-domain';
+} from '@wiwiewei18/storage-domain';
 import { PostgresFileRepo } from '../../infra/repos/postgresFile.repo';
 import { PostgresFileOwnerRepo } from '../../infra/repos/postgresFileOwner.repo';
 import { R2ObjectStorage } from 'src/infra/storage/cloudflare/r2ObjectStorage.service';

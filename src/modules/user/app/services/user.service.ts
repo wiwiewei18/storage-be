@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { SignInWithGoogleUseCase } from '@wiwiewei18/wilin-storage-domain';
+import { SignInWithGoogleUseCase } from '@wiwiewei18/storage-domain';
 import { GoogleTokenService } from '../../../../infra/authentication/google/googleToken.service';
 import { PostgresUserRepo } from '../../infra/repos/postgresUser.repo';
 import { JwtTokenService } from 'src/infra/authentication/jwt/jwtToken.service';
