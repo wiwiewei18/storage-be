@@ -15,5 +15,6 @@ export const fileTable = pgTable('files', {
   size: bigint('size', { mode: 'number' }).notNull(),
   type: varchar('type').notNull(),
   status: varchar('status').notNull(),
+  extractedText: text('extracted_text'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });

@@ -9,6 +9,7 @@ import { JwtAuthModule } from 'src/infra/authentication/jwt/jwtAuth.module';
 import { PostgresFileRepo } from './infra/repos/postgresFile.repo';
 import { R2ObjectStorage } from 'src/infra/storage/cloudflare/r2ObjectStorage.service';
 import { StorageEventPublisher } from './infra/messaging/storageEventPublisher';
+import { TextExtractedSubscriber } from './infra/messaging/textExtractedSubscriber';
 
 @Module({
   imports: [DatabaseModule, JwtAuthModule, RabbitMQModule],
@@ -18,6 +19,7 @@ import { StorageEventPublisher } from './infra/messaging/storageEventPublisher';
     PostgresFileRepo,
     R2ObjectStorage,
     UserSignedUpSubscriber,
+    TextExtractedSubscriber,
     StorageEventPublisher,
     StorageService,
   ],

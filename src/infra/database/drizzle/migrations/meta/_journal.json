@@ -43,6 +43,13 @@
       "when": 1766158396120,
       "tag": "0005_chunky_talisman",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1766491850534,
+      "tag": "0006_funny_hellion",
+      "breakpoints": true
     }
   ]
 }
