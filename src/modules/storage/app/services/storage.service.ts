@@ -3,6 +3,7 @@ import {
   CompleteFileUploadUseCase,
   GetFileListUseCase,
   RequestFileUploadUseCase,
+  SearchFileListUseCase,
 } from '@wiwiewei18/storage-domain';
 import { PostgresFileRepo } from '../../infra/repos/postgresFile.repo';
 import { PostgresFileOwnerRepo } from '../../infra/repos/postgresFileOwner.repo';
@@ -33,6 +34,29 @@ export class StorageService {
           name: file.name,
           size: file.size.toNumber(),
           type: file.type.toString(),
+          createdAt: file.createdAt,
+        };
+      }),
+    };
+  }
+
+  async searchFileLIst(userId: string, keyword: string) {
+    const searchFileListUseCase = new SearchFileListUseCase(
+      this.fileRepo,
+      this.fileOwnerRepo,
+    );
+
+    const output = await searchFileListUseCase.execute({ userId, keyword });
+
+    return {
+      fileList: output.fileSearchResultList.map((file) => {
+        return {
+          id: file.id,
+          name: file.name,
+          nameHighlight: file.nameHighlight,
+          contentHighlight: file.contentHighlight,
+          size: file.size,
+          type: file.type,
           createdAt: file.createdAt,
         };
       }),

@@ -50,6 +50,13 @@
       "when": 1766491850534,
       "tag": "0006_funny_hellion",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1766491850535,
+      "tag": "0007_add_file_search_vector",
+      "breakpoints": true
     }
   ]
 }

@@ -1,5 +1,12 @@
 import { Inject } from '@nestjs/common';
-import { File, FileSize, FileType, FileRepo } from '@wiwiewei18/storage-domain';
+import {
+  File,
+  FileSize,
+  FileType,
+  FileRepo,
+  FileSearchResult,
+} from '@wiwiewei18/storage-domain';
+import { and, sql } from 'drizzle-orm';
 import { eq } from 'drizzle-orm';
 import { DB_CLIENT } from 'src/infra/database/database.module';
 import { fileTable } from 'src/infra/database/drizzle/schemas/file.schema';
@@ -32,6 +39,39 @@ export class PostgresFileRepo implements FileRepo {
         type: FileType.create(data.type),
       }),
     );
+  }
+
+  async search(
+    fileOwnerId: string,
+    keyword: string,
+  ): Promise<FileSearchResult[]> {
+    const rows = await this.db
+      .select({
+        id: fileTable.id,
+        fileName: fileTable.name,
+        nameHighlight: sql`ts_headline('simple', ${fileTable.name}, plainto_tsquery('simple', ${keyword}), 'StartSel=<mark>, StopSel=</mark>')`,
+        contentHighlight: sql`ts_headline('simple', ${fileTable.extractedText}, plainto_tsquery('simple', ${keyword}), 'StartSel=<mark>, StopSel=</mark>, MaxFragments=2')`,
+        size: fileTable.size,
+        type: fileTable.type,
+        createdAt: fileTable.createdAt,
+      })
+      .from(fileTable)
+      .where(
+        and(
+          eq(fileTable.fileOwnerId, fileOwnerId),
+          sql`search_vector @@ plainto_tsquery('simple', ${keyword})`,
+        ),
+      );
+
+    return rows.map((row) => ({
+      id: row.id,
+      name: row.fileName,
+      nameHighlight: row.nameHighlight,
+      contentHighlight: row.contentHighlight,
+      size: row.size,
+      type: row.type,
+      createdAt: row.createdAt,
+    }));
   }
 
   async save(file: File): Promise<void> {
